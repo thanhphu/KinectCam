@@ -5,6 +5,8 @@ on: [push]
 jobs:
   build:
     runs-on: [windows-latest]
+    env:
+      VERSION: 1.0.0
 
     steps:
     - uses: actions/checkout@v2
@@ -57,9 +59,14 @@ jobs:
     - name: Build Filter
       run: |
         cd build
-        cmake --build . --config Release
+        cmake --build . --config Release --target PACKAGE
     - name: Upload Package
       uses: actions/upload-artifact@v1
       with:
         name: KinectCam.ax
         path: build/Release/KinectCam.ax
+    - name: Upload Package
+      uses: actions/upload-artifact@v1
+      with:
+        name: KinectCam-v${{ env.VERSION }}-win64.exe
+        path: build/KinectCam-${{ env.VERSION }}-win64.exe
